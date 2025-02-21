@@ -1,24 +1,23 @@
-FROM python:3.10-slim
+# Use an official base image
+FROM python:3.9-slim
+
+# Create a non-root user
+RUN useradd -m user
 
 # Set the working directory
 WORKDIR /app
 
-# Copy the current directory contents into the container at /app
+# Copy the application files into the container
 COPY . /app
 
-# # Add deadsnakes PPA and install Python 3.11
-# RUN apt-get update && \
-#     apt-get install -y software-properties-common && \
-#     add-apt-repository ppa:deadsnakes/ppa && \
-#     apt-get update && \
-#     apt-get install -y python3.11 && \
-#     apt-get clean
+# Set non-root user
+USER user
 
-# Install any needed packages specified in requirements.txt
+# Install required dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Make port 8000 available to the world outside this container
+# Expose the required port
 EXPOSE 8000
 
-# Run webui.sh with --nowebui argument when the container launches
+# Run the web UI
 CMD ["bash", "webui.sh", "--nowebui", "--host", "0.0.0.0", "--port", "8000"]
