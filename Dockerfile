@@ -1,5 +1,10 @@
-# Use an official base image
+# Use an official Python image as a base image
 FROM python:3.9-slim
+
+# Install dependencies
+RUN apt-get update && apt-get install -y \
+    git \
+    && apt-get clean
 
 # Create a non-root user
 RUN useradd -m user
@@ -10,13 +15,19 @@ WORKDIR /app
 # Copy the application files into the container
 COPY . /app
 
+# Change ownership of the app directory to the user
+RUN chown -R user:user /app
+
 # Set non-root user
 USER user
 
-# Install required dependencies
-RUN pip install --no-cache-dir -r requirements.txt
+# Create and activate the python virtual environment
+RUN python3 -m venv venv
 
-# Expose the required port
+# Install Python dependencies inside the venv
+RUN ./venv/bin/pip install --no-cache-dir -r requirements.txt
+
+# Expose port
 EXPOSE 8000
 
 # Run the web UI
