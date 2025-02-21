@@ -34,4 +34,4 @@ RUN python3 -m venv venv && \
 EXPOSE 8000
 
 # Run the web UI
-CMD ["bash", "webui.sh", "--nowebui", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["bash", "webui.sh", "--nowebui"]
