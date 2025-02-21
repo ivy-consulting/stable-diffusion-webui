@@ -1,6 +1,8 @@
 # Use an official Python image as a base image
 FROM python:3.9-slim
 
+ENV PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
+
 # Install dependencies
 RUN apt-get update && \
     apt-get install -y \
